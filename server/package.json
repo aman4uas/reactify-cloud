@@ -9,7 +9,7 @@
     "format": "prettier --config .prettierrc src/**/*.ts --write"
   },
   "keywords": [],
-  "author": "",
+  "author": "Aman Singh",
   "license": "ISC",
   "description": "",
   "dependencies": {
