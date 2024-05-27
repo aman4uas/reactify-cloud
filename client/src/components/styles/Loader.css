@@ -1,0 +1,21 @@
+@keyframes bounce {
+    0%, 100% {
+      transform: translateY(-25%);
+    }
+    50% {
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-bounce {
+    animation: bounce 0.5s infinite;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+  

@@ -1,0 +1,10 @@
+/.vscode
+/node_modules
+./dist
+./build
+*.env
+.env
+.env.*
+.gitignore
+package*.json
+tsconfig.json
