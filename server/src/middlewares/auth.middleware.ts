@@ -10,10 +10,9 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     req.user = payload
     next()
   } catch (error) {
-    console.log('Unauthorized user !!')
-    res.status(401).json({
+    return res.status(200).json({
       success: false,
-      message: 'Unauthorized user !!'
+      message: 'User Unauthorised !!'
     })
   }
 }

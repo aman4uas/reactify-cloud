@@ -10,6 +10,8 @@ interface IProject extends Document {
   customDomain: string
   subDomain: string
   env: string
+  webhookId: string
+  autoDeploy: boolean
   createdAt: Date
 }
 

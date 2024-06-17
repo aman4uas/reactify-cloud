@@ -33,6 +33,14 @@ const ProjectSchema = new Schema<IProject>({
     type: String,
     trim: true
   },
+  webhookId: {
+    type: String,
+    trim: true
+  },
+  autoDeploy: {
+    type: Boolean,
+    required: true
+  },
   customDomain: {
     type: String,
     required: true,

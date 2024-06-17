@@ -20,8 +20,10 @@ const getSiteDeployments = async (req: Request, res: Response) => {
       data: deployments
     })
   } catch (error) {
-    return res.status(200).json({
+    console.log(error)
+    return res.status(500).json({
       success: false,
+      message: "Something went wrong !!",
       error: error
     })
   }

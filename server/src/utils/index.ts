@@ -1,3 +1,4 @@
 import { runECSTask } from './runECSTask'
+import { createWebhook, updateWebhookActiveStatus } from './webhook'
 
-export { runECSTask }
+export { runECSTask, createWebhook, updateWebhookActiveStatus }

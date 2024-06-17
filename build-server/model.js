@@ -45,6 +45,14 @@ const ProjectSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
+  webhookId: {
+    type: String,
+    trim: true
+  },
+  autoDeploy: {
+    type: Boolean,
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now

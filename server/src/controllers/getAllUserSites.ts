@@ -6,7 +6,7 @@ const getAllUserSites = async (req: Request, res: Response) => {
     const username = req.user?.username
 
     if (!username) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: 'Username is required'
       })
@@ -21,6 +21,7 @@ const getAllUserSites = async (req: Request, res: Response) => {
       },
       {
         $project: {
+          _id: 1,
           repoName: 1,
           branchName: 1,
           customDomain: 1,
@@ -34,8 +35,10 @@ const getAllUserSites = async (req: Request, res: Response) => {
       data: projects
     })
   } catch (error) {
-    return res.status(404).json({
+    console.log(error)
+    return res.status(500).json({
       success: false,
+      message: "Something went wrong !!",
       error: error
     })
   }

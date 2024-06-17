@@ -11,9 +11,15 @@ import {
   getSiteDeployments,
   getDeploymentLogs,
   getSiteDetail,
-  getDeploymentDetail
+  getDeploymentDetail,
+  updateWebhookStatus,
+  autoDeploySite,
+  updateCustomDomain,
+  updateSiteConfiguration,
+  captureScreenshot
 } from '../controllers'
-import { auth } from '../middlewares'
+
+import { auth, verifyWebhook } from '../middlewares'
 
 const router = Router()
 
@@ -30,5 +36,10 @@ router.get('/deploy/site/:id', auth, getSiteDetail)
 router.post('/deploy/site/deployments', auth, getSiteDeployments)
 router.get('/deploy/site/deployment/:id', auth, getDeploymentDetail)
 router.post('/deploy/site/deployment/logs', auth, getDeploymentLogs)
+router.post('/site/update/customDomain', auth, updateCustomDomain)
+router.post('/site/update/configuration', auth, updateSiteConfiguration)
+router.post('/github/update/webhook', auth, updateWebhookStatus) // This is unused !!
+router.post('/github/webhook/autodeploy', verifyWebhook, autoDeploySite)
+router.get('/capture-screenshot', captureScreenshot)
 
 export default router

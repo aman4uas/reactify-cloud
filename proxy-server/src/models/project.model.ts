@@ -10,6 +10,8 @@ interface IProject extends Document {
   customDomain: string
   subDomain: string
   env: string
+  webhookId: string
+  autoDeploy: boolean
   createdAt: Date
 }
 
@@ -56,6 +58,14 @@ const ProjectSchema = new Schema<IProject>({
     required: true,
     unique: true,
     trim: true
+  },
+  webhookId: {
+    type: String,
+    trim: true
+  },
+  autoDeploy: {
+    type: Boolean,
+    required: true
   },
   createdAt: {
     type: Date,

@@ -9,6 +9,11 @@ import { getSiteDeployments } from './getSiteDeployments'
 import { getDeploymentLogs } from './getDeploymentLogs'
 import { getSiteDetail } from './getSiteDetail'
 import { getDeploymentDetail } from './getDeploymentDetail'
+import { updateWebhookStatus } from './webhook'
+import { autoDeploySite } from './autoDeploySite'
+import { updateCustomDomain } from './updateCustomDomain'
+import { updateSiteConfiguration } from './updateSiteConfiguration'
+import { captureScreenshot } from './captureScreenshot'
 
 export {
   callback,
@@ -22,5 +27,10 @@ export {
   getSiteDeployments,
   getDeploymentLogs,
   getSiteDetail,
-  getDeploymentDetail
+  getDeploymentDetail,
+  updateWebhookStatus,
+  autoDeploySite,
+  updateCustomDomain,
+  updateSiteConfiguration,
+  captureScreenshot
 }

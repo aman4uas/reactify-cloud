@@ -19,8 +19,10 @@ const getDeploymentLogs = async (req: Request, res: Response) => {
       data: logs
     })
   } catch (error) {
-    return res.status(404).json({
+    console.log(error)
+    return res.status(500).json({
       success: false,
+      message: "Something went wrong !!",
       error: error
     })
   }

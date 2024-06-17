@@ -1,3 +1,3 @@
-import router from './user.router'
+import router from './router'
 
 export { router }

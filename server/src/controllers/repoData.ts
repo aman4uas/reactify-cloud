@@ -11,7 +11,7 @@ const repoData = async (req: Request, res: Response) => {
   try {
     const username = req.user?.username
     if (!username) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: 'Username is required'
       })
@@ -20,7 +20,7 @@ const repoData = async (req: Request, res: Response) => {
     const current_user = await User.findOne({ username })
 
     if (!current_user || !current_user.gitHubToken) {
-      return res.status(404).json({
+      return res.status(200).json({
         success: false,
         message: 'User or GitHub token not found'
       })
@@ -49,9 +49,10 @@ const repoData = async (req: Request, res: Response) => {
       data: repos
     })
   } catch (error) {
-    return res.status(404).json({
+    console.log(error)
+    return res.status(500).json({
       success: false,
-      message: 'Something went wrong !!',
+      message: "Something went wrong !!",
       error: error
     })
   }

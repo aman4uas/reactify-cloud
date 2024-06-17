@@ -1,2 +1,4 @@
 import { auth } from './auth.middleware'
-export { auth }
+import { verifyWebhook } from './verifyWebhook.middleware'
+
+export { auth, verifyWebhook }
