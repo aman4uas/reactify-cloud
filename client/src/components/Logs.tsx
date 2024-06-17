@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import './styles/ScrollBar.css'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Confetti from 'react-dom-confetti'
 import Loader from './helper/Loader'
 import { dateToStringWithTime } from '../utils/dateToString'
 import Navbar from './Navbar'
-import { errorHandler, toastMessage } from '../utils'
+import { errorHandler, toastMessage, authHandler } from '../utils'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 const InProgressText = () => {
@@ -62,6 +62,7 @@ const config = {
 const Logs = () => {
   const terminalRef = useRef<HTMLDivElement>(null)
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(true)
   const celebrate = useRef(false)
@@ -73,6 +74,10 @@ const Logs = () => {
   const getDeploymentDetail = async (id: string) => {
     const url = `${backend_url}/deploy/site/deployment/${id}`
     const response = await axios.get(url, { withCredentials: true })
+    if (authHandler(response)) {
+      navigate('/login')
+      return null
+    }
     if (errorHandler(response)) return null
     return response.data.data
   }
@@ -80,6 +85,10 @@ const Logs = () => {
   const getSiteDetail = async (id: string) => {
     const url = `${backend_url}/deploy/site/${id}`
     const response = await axios.get(url, { withCredentials: true })
+    if (authHandler(response)) {
+      navigate('/login')
+      return null
+    }
     if (errorHandler(response)) return null
     return response.data.data
   }
@@ -90,6 +99,10 @@ const Logs = () => {
       { deploymentId: id },
       { withCredentials: true }
     )
+    if (authHandler(response)) {
+      navigate('/login')
+      return []
+    }
     if (errorHandler(response)) return []
     const rawLogs = response.data.data
     const logs: string[] = []
@@ -134,7 +147,7 @@ const Logs = () => {
         await delay(waitTime * 1000)
       } catch (error) {
         console.log(error)
-        toastMessage("Something went wrong !!", false)
+        toastMessage('Something went wrong !!', false)
       }
     }
   }
@@ -148,7 +161,7 @@ const Logs = () => {
         const siteDetail = await getSiteDetail(deploymentDetail.projectId)
         setSiteDetail(siteDetail)
         let flag = false
-        if(proxy_url.startsWith("https://")) flag=true
+        if (proxy_url.startsWith('https://')) flag = true
         let siteUrl = proxy_url.replace('http://', '').replace('https://', '')
         if (siteDetail) siteUrl = 'http' + (flag ? 's' : '') + '://' + siteDetail.customDomain + '.' + siteUrl
         setSiteUrl(siteUrl)

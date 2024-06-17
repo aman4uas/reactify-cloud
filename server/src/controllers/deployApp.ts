@@ -52,7 +52,7 @@ const deployApp = async (req: Request, res: Response) => {
       })
     }
     const current_user = await User.findOne({ username })
-  
+
     if (!current_user || !current_user.gitHubToken) {
       return res.status(200).json({
         success: false,
@@ -63,7 +63,7 @@ const deployApp = async (req: Request, res: Response) => {
     const GIT_URL = `https://${accessToken}@github.com/${username}/${req.body.repo}.git`
     const SUB_DOMAIN = uuidv4()
     const CUSTOM_DOMAIN = sanitize(username) + '-' + sanitize(req.body.repo) + '-' + generateShortUUID()
-  
+
     let project = await Project.findOneAndUpdate(
       {
         createdBy: username,
@@ -80,7 +80,7 @@ const deployApp = async (req: Request, res: Response) => {
         new: true
       }
     )
-  
+
     if (!project) {
       const response = await createWebhook(username, req.body.repo, accessToken, req.body.autodeploy)
       project = await Project.create({
@@ -105,23 +105,23 @@ const deployApp = async (req: Request, res: Response) => {
         req.body.autodeploy
       )
     }
-  
+
     const PROJECT_ID = project._id
-  
+
     const newDeployment = await Deployment.create({
-      projectId: PROJECT_ID, 
+      projectId: PROJECT_ID,
       status: 'Queued'
     })
-  
+
     const DEPLOYMENT_ID = newDeployment._id!.toString()
-  
+
     const envArray = [
       { name: 'GIT_URL', value: GIT_URL },
       { name: 'DEPLOYMENT_ID', value: DEPLOYMENT_ID.toString() },
       { name: 'PROJECT_ID', value: PROJECT_ID!.toString() },
       { name: 'SUB_DOMAIN', value: SUB_DOMAIN }
     ]
-  
+
     try {
       await runECSTask(envArray)
       await dbInsertLog('Process Queued...', '', DEPLOYMENT_ID)
@@ -130,7 +130,7 @@ const deployApp = async (req: Request, res: Response) => {
         { status: 'Queued' },
         { new: true }
       )
-      
+
       return res.status(200).json({
         success: true,
         message: 'Process Queued',
@@ -143,7 +143,7 @@ const deployApp = async (req: Request, res: Response) => {
         { status: 'Failed' },
         { new: true }
       )
-  
+
       return res.status(200).json({
         success: false,
         message: 'Failed-Error spinning up container'
@@ -153,7 +153,7 @@ const deployApp = async (req: Request, res: Response) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: "Something went wrong !!",
+      message: 'Something went wrong !!',
       error: error
     })
   }

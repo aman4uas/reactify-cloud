@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useState, ChangeEvent, useEffect } from 'react'
 import axios from 'axios'
-import { errorHandler, toastMessage } from '../utils'
+import { errorHandler, toastMessage, authHandler } from '../utils'
 import Navbar from './Navbar'
 import { FaReact, FaEye, FaEyeSlash, FaPlus, FaTrash } from 'react-icons/fa'
 
@@ -14,6 +14,7 @@ interface Variable {
 
 const DeployApp = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const repo = id
   const [variables, setVariables] = useState<Variable[]>([])
@@ -38,12 +39,15 @@ const DeployApp = () => {
       const response = await axios.post(`${backend_url}/deploy/app`, data, {
         withCredentials: true
       })
-
+      if (authHandler(response)) {
+        navigate('/login')
+        return
+      }
       if (errorHandler(response)) return
       window.location.href = `/log/${response.data.data}`
     } catch (error) {
       console.log(error)
-      toastMessage("Something went wrong!!", false)
+      toastMessage('Something went wrong!!', false)
     }
   }
 
@@ -79,19 +83,22 @@ const DeployApp = () => {
   }
 
   useEffect(() => {
-    const getBranches = async()=>{
+    const getBranches = async () => {
       const response = await axios.get(`${backend_url}/github/branches/${id}`, {
         withCredentials: true
       })
-     if( errorHandler(response)) return
-     if(response.data.data.length===0) return
-     setBranches(response.data.data)
-     setBranch(response.data.data[0])
+      if (authHandler(response)) {
+        navigate('/login')
+        return
+      }
+      if (errorHandler(response)) return
+      if (response.data.data.length === 0) return
+      setBranches(response.data.data)
+      setBranch(response.data.data[0])
     }
 
     getBranches()
   }, [])
-
 
   return (
     <>

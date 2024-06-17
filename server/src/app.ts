@@ -7,13 +7,12 @@ dotenv.config()
 import { router } from './routes'
 
 const app = express()
-const FRONTEND_URL = process.env.FRONTEND_URL || `localhost:${process.env.PORT || 4000}`
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000'
 
-app.use([
-    express.json(), 
-    cookieParser(), 
-    cors({ origin: FRONTEND_URL, credentials: true }), 
-    router
-])
+app.use(express.json())
+app.use(cookieParser())
+app.use(cors({ origin: ['http://localhost:3000', FRONTEND_URL], credentials: true }))
+
+app.use(router)
 
 export default app

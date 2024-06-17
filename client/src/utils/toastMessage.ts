@@ -24,4 +24,4 @@ const toastMessage = (message: string, success: boolean) => {
   }
 }
 
-export {toastMessage}
+export { toastMessage }

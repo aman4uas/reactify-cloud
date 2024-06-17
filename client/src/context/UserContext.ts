@@ -1,10 +1,10 @@
 import { createContext } from 'react'
 
 export interface UserContextType {
-  username: string | null;
-  setUsername: (name: string | null) => void;
-  imageLink: string | null;
-  setImageLink: (link: string | null) => void;
+  username: string | null
+  setUsername: (name: string | null) => void
+  imageLink: string | null
+  setImageLink: (link: string | null) => void
 }
 
 const initialContext: UserContextType = {
@@ -15,5 +15,3 @@ const initialContext: UserContextType = {
 }
 
 export const UserContext = createContext<UserContextType>(initialContext)
-
-

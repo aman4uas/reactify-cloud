@@ -4,7 +4,8 @@ import { errorImg } from '../assets/error-img'
 
 const timeout = 10 // Time in Seconds
 const captureScreenshot = async (req: Request, res: Response) => {
-  let browser, errorImgAddress = errorImg
+  let browser,
+    errorImgAddress = errorImg
   try {
     let { url } = req.query
     browser = await puppeteer.launch()
@@ -12,7 +13,7 @@ const captureScreenshot = async (req: Request, res: Response) => {
     await page.setViewport({
       width: 1366,
       height: 768,
-      deviceScaleFactor: 1,
+      deviceScaleFactor: 1
     })
 
     if (typeof url !== 'string') {

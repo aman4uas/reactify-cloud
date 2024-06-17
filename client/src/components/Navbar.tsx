@@ -1,47 +1,51 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 import { UserContext } from '../context/UserContext'
-import { errorHandler, toastMessage } from '../utils'
+import { errorHandler, toastMessage, authHandler } from '../utils'
 import axios from 'axios'
 
 const backend_url = import.meta.env.VITE_BACKEND_URL
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const [dropdownVisible, setDropdownVisible] = useState(false)
-  const {username, setUsername, imageLink, setImageLink} = useContext(UserContext)
-  
+  const { username, setUsername, imageLink, setImageLink } = useContext(UserContext)
+
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible)
   }
-  const logoutHandler = async()=>{
+  const logoutHandler = async () => {
     try {
       await axios.get(`${backend_url}/user/logout`, {
         withCredentials: true
       })
       setUsername(null)
       setImageLink(null)
-      window.location.href="/login"
+      window.location.href = '/login'
     } catch (error) {
       console.log(error)
-      toastMessage("Error in signing Out !!", false)
+      toastMessage('Error in signing Out !!', false)
     }
   }
-
 
   useEffect(() => {
     const getUserData = async () => {
       try {
-      if(username!==null && imageLink!==null) return
+        if (username !== null && imageLink !== null) return
         const response = await axios.get(`${backend_url}/github/user`, {
           withCredentials: true
         })
-        if(errorHandler(response)) return
+        if (authHandler(response)) {
+          navigate('/login')
+          return
+        }
+        if (errorHandler(response)) return
         const user = response.data.data
         setUsername(user.username)
         setImageLink(user.avatar_url)
       } catch (error) {
-        toastMessage("Something went wrong !!", false)
+        toastMessage('Something went wrong !!', false)
       }
     }
 
@@ -79,26 +83,34 @@ const Navbar = () => {
                 Sites
               </Link>
             </li>
-           
           </ul>
         </div>
 
         <div className="relative">
-          <button type="button" className="flex items-center rounded-full cursor-pointer m-0 p-0" onClick={toggleDropdown}>
+          <button
+            type="button"
+            className="flex items-center rounded-full cursor-pointer m-0 p-0"
+            onClick={toggleDropdown}
+          >
             <img
               className="h-12 rounded-full "
-              src={imageLink || "https://static.vecteezy.com/system/resources/previews/021/548/095/non_2x/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg"}
+              src={
+                imageLink ||
+                'https://static.vecteezy.com/system/resources/previews/021/548/095/non_2x/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg'
+              }
               alt="User"
             />
-            {dropdownVisible ? 
-              <FaCaretUp className="mx-1 md:mx-2 text-white h-4 md:h-5 "/> 
-              : <FaCaretDown className="mx-1 md:mx-2 text-white h-4 md:h-5 "/>}
+            {dropdownVisible ? (
+              <FaCaretUp className="mx-1 md:mx-2 text-white h-4 md:h-5 " />
+            ) : (
+              <FaCaretDown className="mx-1 md:mx-2 text-white h-4 md:h-5 " />
+            )}
           </button>
 
           {dropdownVisible && (
             <div className="absolute right-0 mt-2 w-44 z-10 divide-y rounded-lg shadow bg-gray-700 divide-gray-600">
               <div className="px-4 py-3 text-sm text-white">
-                <div className="font-medium truncate">{username || "Undefined-User"}</div>
+                <div className="font-medium truncate">{username || 'Undefined-User'}</div>
               </div>
               <div className="py-1 block md:hidden">
                 <Link
@@ -108,7 +120,7 @@ const Navbar = () => {
                   Sites
                 </Link>
               </div>
-              
+
               <div className="py-1">
                 <button
                   onClick={logoutHandler}

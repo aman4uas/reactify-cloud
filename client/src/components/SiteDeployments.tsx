@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect, ChangeEvent } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toastMessage } from '../utils'
 import {
   FaEye,
@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fa'
 
 import Navbar from './Navbar'
-import { errorHandler } from '../utils'
+import { errorHandler, authHandler } from '../utils'
 
 import Loader from './helper/Loader'
 import LoadingScreenshot from '../assets/loading.gif'
@@ -61,6 +61,7 @@ const sanitize = (input: string) => {
 }
 
 const SiteDeployments = () => {
+  const navigate = useNavigate()
   const { id } = useParams()
   const [loading, setLoading] = useState(true)
   const [deployments, setDeployments] = useState<IDeployment[]>([])
@@ -82,7 +83,11 @@ const SiteDeployments = () => {
           withCredentials: true
         }
       )
-      if(errorHandler(response)) return
+      if (authHandler(response)) {
+        navigate('/login')
+        return
+      }
+      if (errorHandler(response)) return
       const temp_deployments = response.data.data
       for (let i = 0; i < temp_deployments.length; i++) {
         if (temp_deployments[i].status === 'Success') {
@@ -95,7 +100,11 @@ const SiteDeployments = () => {
       const response2 = await axios.get(`${backend_url}/deploy/site/${id}`, {
         withCredentials: true
       })
-      if(errorHandler(response2)) return
+      if (authHandler(response2)) {
+        navigate('/login')
+        return
+      }
+      if (errorHandler(response2)) return
       const siteData = response2.data.data
       setSiteDetail(siteData)
       let siteUrl = proxy_url.replace('http://', '')
@@ -111,7 +120,11 @@ const SiteDeployments = () => {
     const getLiveWebSitePreview = async (url: string) => {
       try {
         const response = await axios.get(backend_url + '/capture-screenshot', { params: { url: url } })
-        if(errorHandler(response)) return
+        if (authHandler(response)) {
+          navigate('/login')
+          return
+        }
+        if (errorHandler(response)) return
         setSitePreviewUrl(response.data.data)
       } catch (error) {
         console.log(error)
@@ -120,18 +133,18 @@ const SiteDeployments = () => {
     try {
       getSiteDeployments()
     } catch (error) {
-      toastMessage("Something went wrong !!", false)
+      toastMessage('Something went wrong !!', false)
     }
   }, [id])
 
   useEffect(() => {
     if (siteDetail) {
       let flag = false
-      if(proxy_url.startsWith("https://")) flag = true
+      if (proxy_url.startsWith('https://')) flag = true
       let siteUrl = proxy_url.replace('http://', '')
       siteUrl = siteUrl.replace('https://', '')
       if (siteDetail.customDomain) {
-        siteUrl = 'http' + (flag ? 's': '') + '://' + siteDetail.customDomain + '.' + siteUrl
+        siteUrl = 'http' + (flag ? 's' : '') + '://' + siteDetail.customDomain + '.' + siteUrl
         setSiteUrl(siteUrl)
       }
     }
@@ -198,11 +211,11 @@ const SiteDeployments = () => {
   const updateConfigurationHandler = async () => {
     setUpdateConfigurationButtonDisable(true)
     if (siteDetail?.buildCommand.length === 0 || siteDetail?.publishDirectory.length === 0) {
-      toastMessage("Build Command & Publish Directory are mandatory fields !!", false)
+      toastMessage('Build Command & Publish Directory are mandatory fields !!', false)
       return
     }
     if (!siteDetail) {
-      toastMessage("Unable to get Site Details !!", false)
+      toastMessage('Unable to get Site Details !!', false)
       return
     }
 
@@ -221,7 +234,11 @@ const SiteDeployments = () => {
           withCredentials: true
         }
       )
-      
+      if (authHandler(response)) {
+        navigate('/login')
+        return
+      }
+
       if (errorHandler(response)) {
         setUpdateConfigurationButtonDisable(false)
         return
@@ -229,7 +246,7 @@ const SiteDeployments = () => {
 
       window.location.href = `/log/${response.data.data}`
     } catch (error) {
-      toastMessage("Something went wrong !!", false)
+      toastMessage('Something went wrong !!', false)
       setUpdateConfigurationButtonDisable(false)
     }
   }
@@ -248,7 +265,11 @@ const SiteDeployments = () => {
         { customSubdomain, id: siteDetail?._id },
         { withCredentials: true }
       )
-      if(errorHandler(response)) return
+      if (authHandler(response)) {
+        navigate('/login')
+        return
+      }
+      if (errorHandler(response)) return
 
       setSiteDetail((prevState) => {
         if (prevState) {
@@ -263,7 +284,7 @@ const SiteDeployments = () => {
       setCustomDomain('')
       setCustomSubdomain('')
       if (response.data.success) {
-        toastMessage("Successfully updated the domain !!", true)
+        toastMessage('Successfully updated the domain !!', true)
       }
     } catch (error) {
       let errorMessage = 'An unexpected error occurred'
@@ -398,7 +419,6 @@ const SiteDeployments = () => {
             </div>
           </div>
         </div>
-        
 
         <div className="w-full sm:w-4/5 md:w-[55%] mx-auto my-1 mb-5 p-4 sm:p-6 lg:p-8 bg-gray-800 text-white rounded-lg shadow-lg">
           <div className="bg-gray-800 p-8 rounded-md shadow-md w-full">
@@ -503,8 +523,6 @@ const SiteDeployments = () => {
             </button>
           </div>
         </div>
-
-        
       </div>
     </>
   )

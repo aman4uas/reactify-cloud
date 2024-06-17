@@ -5,18 +5,20 @@ interface ApiResponse {
   message?: string
 }
 
-const errorHandler = (response: AxiosResponse<ApiResponse>) => {
-  if (response.data.success === false){
-    if(response.data.message === 'User Unauthorised !!'){
-      window.location.href = '/login'
-    }
-    else {
-      console.log(response.data.message)
-      toastMessage(response.data.message || "An error occurred", false)
-    }
+const authHandler = (response: AxiosResponse<ApiResponse>) => {
+  if (response.data.success === false && response.data.message === 'User Unauthorised !!') {
     return true
   }
   return false
 }
 
-export { errorHandler }
+const errorHandler = (response: AxiosResponse<ApiResponse>) => {
+  if (response.data.success === false) {
+    console.log(response.data.message)
+    toastMessage(response.data.message || 'An error occurred', false)
+    return true
+  }
+  return false
+}
+
+export { errorHandler, authHandler }

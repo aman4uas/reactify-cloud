@@ -32,23 +32,23 @@ const callback = async (req: Request, res: Response) => {
         }
       }
     )
-  
+
     const githubAcessToken = result.data.access_token
     const apiUrl = 'https://api.github.com/user'
-  
+
     const response = await axios.get(apiUrl, {
       headers: {
         Authorization: `Bearer ${githubAcessToken}`
       }
     })
-  
+
     const currentUser = await User.findOne({ username: response.data.login })
-  
+
     const payload: IPayload = { username: response.data.login }
     const userAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: JWT_EXPIRY_TIME
     })
-  
+
     if (currentUser) {
       const updatedUser = await User.findOneAndUpdate(
         { username: response.data.login },
@@ -57,24 +57,24 @@ const callback = async (req: Request, res: Response) => {
       )
     } else {
       const newUser = new User({
-        name: response.data.name || "GitHub User",
+        name: response.data.name || 'GitHub User',
         username: response.data.login,
         gitHubToken: githubAcessToken
       })
       await newUser.save()
     }
-  
+
     const option = {
       httpOnly: true,
-      secure: true
+      expires: new Date(Date.now() + 60 * 60 * 1000)
     }
-  
+
     res.cookie('accessToken', userAccessToken, option).redirect(`${process.env.FRONTEND_URL}`)
   } catch (error) {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: "Something went wrong !!",
+      message: 'Something went wrong !!',
       error: error
     })
   }

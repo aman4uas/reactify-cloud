@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import { Request, Response, NextFunction } from 'express'
 
 const verifyWebhook = (req: Request, res: Response, next: NextFunction) => {
-  console.log( process.env.WEBHOOK_SECRET!)
+  console.log(process.env.WEBHOOK_SECRET!)
   const signature = crypto
     .createHmac('sha256', process.env.WEBHOOK_SECRET!)
     .update(JSON.stringify(req.body))

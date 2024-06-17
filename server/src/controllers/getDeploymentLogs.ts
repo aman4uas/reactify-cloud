@@ -22,7 +22,7 @@ const getDeploymentLogs = async (req: Request, res: Response) => {
     console.log(error)
     return res.status(500).json({
       success: false,
-      message: "Something went wrong !!",
+      message: 'Something went wrong !!',
       error: error
     })
   }

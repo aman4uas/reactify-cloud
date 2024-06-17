@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { errorHandler } from '../../utils'
+import { errorHandler, authHandler } from '../../utils'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 interface IRepo {
   name: string
@@ -16,6 +17,7 @@ const Repo = () => {
   const [repoFetched, setRepoFetched] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [empty, setEmpty] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getRepoData = async () => {
@@ -24,14 +26,18 @@ const Repo = () => {
         const response = await axios.get(`${backend_url}/github/repos`, {
           withCredentials: true
         })
-        if(errorHandler(response)) {
+        if (authHandler(response)) {
+          navigate('/login')
+          return
+        }
+        if (errorHandler(response)) {
           setRepoFetched(true)
           return
         }
         const repo = response.data.data
         setRepo(repo)
         setFilteredRepos(repo)
-        if(repo.length===0) setEmpty(true)
+        if (repo.length === 0) setEmpty(true)
         setRepoFetched(true)
       } catch (error) {
         console.error('Error fetching repo data:', error)
@@ -96,25 +102,24 @@ const Repo = () => {
           </svg>
           <p>Loading repositories...</p>
         </div>
-      ) : ( 
-        empty ? (
-          <div className="text-center mt-20">
-            <svg
-              className="h-12 w-12 text-gray-400 mx-auto mb-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12 2C6.477 2 2 6.477 2 12a10.002 10.002 0 006.839 9.501c.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.455-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.004.071 1.533 1.032 1.533 1.032.892 1.529 2.341 1.088 2.91.832.091-.647.35-1.089.636-1.339-2.22-.252-4.555-1.112-4.555-4.951 0-1.093.39-1.988 1.029-2.687-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.547 1.376.202 2.393.1 2.646.641.699 1.028 1.594 1.028 2.687 0 3.848-2.338 4.695-4.567 4.943.359.31.678.921.678 1.856 0 1.34-.012 2.42-.012 2.748 0 .268.18.579.688.48A10.002 10.002 0 0022 12c0-5.523-4.477-10-10-10z"
-              />
-            </svg>
-            <p className="text-lg text-gray-400">No repositories found.</p>
-          </div>
-        )  : 
-        (<div className="space-y-4">
+      ) : empty ? (
+        <div className="text-center mt-20">
+          <svg
+            className="h-12 w-12 text-gray-400 mx-auto mb-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12 2C6.477 2 2 6.477 2 12a10.002 10.002 0 006.839 9.501c.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.455-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.004.071 1.533 1.032 1.533 1.032.892 1.529 2.341 1.088 2.91.832.091-.647.35-1.089.636-1.339-2.22-.252-4.555-1.112-4.555-4.951 0-1.093.39-1.988 1.029-2.687-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.547 1.376.202 2.393.1 2.646.641.699 1.028 1.594 1.028 2.687 0 3.848-2.338 4.695-4.567 4.943.359.31.678.921.678 1.856 0 1.34-.012 2.42-.012 2.748 0 .268.18.579.688.48A10.002 10.002 0 0022 12c0-5.523-4.477-10-10-10z"
+            />
+          </svg>
+          <p className="text-lg text-gray-400">No repositories found.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
           {filteredRepos.map((repo: IRepo, index) => (
             <div
               key={index}
@@ -146,7 +151,7 @@ const Repo = () => {
               </div>
             </div>
           ))}
-        </div>)
+        </div>
       )}
     </div>
   )
