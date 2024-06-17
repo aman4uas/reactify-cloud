@@ -22,7 +22,7 @@ const Navbar = () => {
       })
       setUsername(null)
       setImageLink(null)
-      navigate("/login")
+      navigate('/login')
     } catch (error) {
       console.log(error)
       toastMessage('Error in signing Out !!', false)
