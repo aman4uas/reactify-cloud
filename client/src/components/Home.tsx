@@ -9,7 +9,7 @@ const Home = () => {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     if (code) {
-      navigate(`/login?${code}`)
+      navigate(`/login?code=${code}`)
     }
   })
   return (
