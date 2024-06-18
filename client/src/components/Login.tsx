@@ -15,7 +15,6 @@ const loginHandler = async () => {
       }
     } catch (error) {
       console.log('Error during authentication', error)
-      //toastMessage('Error during authentication', false)
     }
   } else {
     console.log('Backend URL is not defined')
@@ -28,23 +27,21 @@ const Login = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Handle redirect from GitHub after authentication
     
     const handleGitHubCallback = async (code: string) => {
       try {
         const response = await apiGetRequest(`${import.meta.env.VITE_BACKEND_URL}/github/auth/callback?code=${code}`, false)
         if (response.data.success) {
-          // Store token and redirect to dashboard
           localStorage.setItem('accessToken', response.data.token)
-          if (response.data.token) toastMessage('Got token in console...!!', true)
+          if (response.data.token) console.log('Token:', response.data.token)
           else toastMessage('Error getting token', false)
           navigate("/")
         } else {
-          toastMessage(response.data.message || 'Login failed', false)
+          console.log(response.data.message || 'Login failed', false)
+          toastMessage("Cannot find Access Token !!", false)
         }
       } catch (error) {
         console.log('Error during callback handling', error)
-        toastMessage('Error during callback handling', false)
       }
     }
 
