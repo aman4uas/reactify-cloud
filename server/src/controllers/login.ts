@@ -61,6 +61,8 @@ const callback = async (req: Request, res: Response) => {
       await newUser.save();
     }
     const option = {
+      site: 'none',
+      secure: true,
       httpOnly: true,
       expires: new Date(Date.now() + 60 * 60 * 1000)
     }
