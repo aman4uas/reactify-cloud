@@ -1,17 +1,60 @@
-import { Link } from 'react-router-dom'
-import { toastMessage } from '../utils'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { apiGetRequest, toastMessage } from '../utils'
 
-const loginHandler = () => {
+const loginHandler = async () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL
   if (backendUrl) {
-    window.location.href = `${backendUrl}/github/auth`
+    try {
+      const response = await apiGetRequest(`${backendUrl}/github/auth`, true)
+      if (response.data.success) {
+        const githubAuthUrl = response.data.url
+        window.location.href = githubAuthUrl
+      } else {
+        console.log(response.data.message || 'Authentication failed')
+      }
+    } catch (error) {
+      console.log('Error during authentication', error)
+      //toastMessage('Error during authentication', false)
+    }
   } else {
     console.log('Backend URL is not defined')
     toastMessage('Backend URL missing !!', false)
   }
 }
 
+
 const Login = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Handle redirect from GitHub after authentication
+    
+    const handleGitHubCallback = async (code: string) => {
+      try {
+        const response = await apiGetRequest(`${import.meta.env.VITE_BACKEND_URL}/github/auth/callback?code=${code}`, false)
+        if (response.data.success) {
+          // Store token and redirect to dashboard
+          localStorage.setItem('accessToken', response.data.token)
+          if (response.data.token) toastMessage('Got token in console...!!', true)
+          else toastMessage('Error getting token', false)
+          navigate("/")
+        } else {
+          toastMessage(response.data.message || 'Login failed', false)
+        }
+      } catch (error) {
+        console.log('Error during callback handling', error)
+        toastMessage('Error during callback handling', false)
+      }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const code = urlParams.get('code')
+    if (code) {
+      handleGitHubCallback(code)
+    }
+  })
+
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-white">
       {/* Navigation bar */}

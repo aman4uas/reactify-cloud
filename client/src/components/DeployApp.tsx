@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, ChangeEvent, useEffect } from 'react'
-import axios from 'axios'
-import { errorHandler, toastMessage, authHandler } from '../utils'
+import { errorHandler, toastMessage, authHandler, apiGetRequest, apiPostRequest } from '../utils'
 import Navbar from './Navbar'
 import { FaReact, FaEye, FaEyeSlash, FaPlus, FaTrash } from 'react-icons/fa'
 
@@ -36,9 +35,7 @@ const DeployApp = () => {
         buildDirectory,
         autodeploy
       }
-      const response = await axios.post(`${backend_url}/deploy/app`, data, {
-        withCredentials: true
-      })
+      const response = await apiPostRequest(`${backend_url}/deploy/app`, true, data)
       if (authHandler(response)) {
         navigate('/login')
         return
@@ -84,9 +81,7 @@ const DeployApp = () => {
 
   useEffect(() => {
     const getBranches = async () => {
-      const response = await axios.get(`${backend_url}/github/branches/${id}`, {
-        withCredentials: true
-      })
+      const response = await apiGetRequest(`${backend_url}/github/branches/${id}`, true)
       if (authHandler(response)) {
         navigate('/login')
         return

@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect, ChangeEvent } from 'react'
-import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import { toastMessage } from '../utils'
+import { apiGetRequest, apiPostRequest, toastMessage } from '../utils'
 import {
   FaEye,
   FaEyeSlash,
@@ -20,6 +19,7 @@ import {
 
 import Navbar from './Navbar'
 import { errorHandler, authHandler } from '../utils'
+import { errorImg } from '../assets/errorImg'
 
 import Loader from './helper/Loader'
 import LoadingScreenshot from '../assets/loading.gif'
@@ -76,13 +76,7 @@ const SiteDeployments = () => {
 
   useEffect(() => {
     const getSiteDeployments = async () => {
-      const response = await axios.post(
-        `${backend_url}/deploy/site/deployments`,
-        { projectId: id },
-        {
-          withCredentials: true
-        }
-      )
+      const response = await apiPostRequest(`${backend_url}/deploy/site/deployments`, true, { projectId: id })
       if (authHandler(response)) {
         navigate('/login')
         return
@@ -97,9 +91,7 @@ const SiteDeployments = () => {
       }
       setDeployments(temp_deployments)
 
-      const response2 = await axios.get(`${backend_url}/deploy/site/${id}`, {
-        withCredentials: true
-      })
+      const response2 = await apiGetRequest(`${backend_url}/deploy/site/${id}`, true)
       if (authHandler(response2)) {
         navigate('/login')
         return
@@ -119,17 +111,27 @@ const SiteDeployments = () => {
 
     const getLiveWebSitePreview = async (url: string) => {
       try {
-        const response = await axios.get(backend_url + '/capture-screenshot', { params: { url: url } })
-        if (authHandler(response)) {
-          navigate('/login')
-          return
+        const apiUrl = 'https://v1.nocodeapi.com/amanhacks4u/screen/wnYEfxEBTwRADJsv/screenshot';
+        const params = {
+          url: url,
+          inline: 'json',
+          delay: 1,
+          viewport: '1366x768',
         }
-        if (errorHandler(response)) return
-        setSitePreviewUrl(response.data.data)
+        const response = await apiGetRequest(apiUrl, false, params)
+        if(response.data.error){
+          setSitePreviewUrl(errorImg)
+        }
+        else{
+          setSitePreviewUrl(response.data.location)
+        }
       } catch (error) {
         console.log(error)
+        setSitePreviewUrl(errorImg)
       }
     }
+
+
     try {
       getSiteDeployments()
     } catch (error) {
@@ -220,8 +222,9 @@ const SiteDeployments = () => {
     }
 
     try {
-      const response = await axios.post(
+      const response = await apiPostRequest(
         backend_url + '/site/update/configuration',
+        true,
         {
           autoDeploy: siteDetail.autoDeploy,
           publishDirectory: siteDetail.publishDirectory,
@@ -229,9 +232,6 @@ const SiteDeployments = () => {
           id: siteDetail._id,
           sourceDirectory: siteDetail.sourceDirectory,
           env: variables
-        },
-        {
-          withCredentials: true
         }
       )
       if (authHandler(response)) {
@@ -260,10 +260,10 @@ const SiteDeployments = () => {
     }
     try {
       setChangeDomainButtonDisable(true)
-      const response = await axios.post(
-        `${backend_url}/site/update/customDomain`,
-        { customSubdomain, id: siteDetail?._id },
-        { withCredentials: true }
+      const response = await apiPostRequest(
+        `${backend_url}/site/update/customDomain`, 
+        true, 
+        { customSubdomain, id: siteDetail?._id }
       )
       if (authHandler(response)) {
         navigate('/login')

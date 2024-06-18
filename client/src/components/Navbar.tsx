@@ -2,8 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState, useContext, useEffect } from 'react'
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 import { UserContext } from '../context/UserContext'
-import { errorHandler, toastMessage, authHandler } from '../utils'
-import axios from 'axios'
+import { errorHandler, toastMessage, authHandler, apiGetRequest } from '../utils'
 
 const backend_url = import.meta.env.VITE_BACKEND_URL
 
@@ -17,9 +16,7 @@ const Navbar = () => {
   }
   const logoutHandler = async () => {
     try {
-      await axios.get(`${backend_url}/user/logout`, {
-        withCredentials: true
-      })
+      localStorage.setItem('accessToken', '')
       setUsername(null)
       setImageLink(null)
       navigate('/login')
@@ -33,9 +30,7 @@ const Navbar = () => {
     const getUserData = async () => {
       try {
         if (username !== null && imageLink !== null) return
-        const response = await axios.get(`${backend_url}/github/user`, {
-          withCredentials: true
-        })
+        const response = await apiGetRequest(`${backend_url}/github/user`, true)
         if (authHandler(response)) {
           navigate('/login')
           return

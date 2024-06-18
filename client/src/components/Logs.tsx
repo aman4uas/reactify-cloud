@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
 import './styles/ScrollBar.css'
 import { useParams, useNavigate } from 'react-router-dom'
 import Confetti from 'react-dom-confetti'
 import Loader from './helper/Loader'
 import { dateToStringWithTime } from '../utils/dateToString'
 import Navbar from './Navbar'
-import { errorHandler, toastMessage, authHandler } from '../utils'
+import { errorHandler, toastMessage, authHandler, apiGetRequest, apiPostRequest } from '../utils'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 const InProgressText = () => {
@@ -73,7 +72,7 @@ const Logs = () => {
 
   const getDeploymentDetail = async (id: string) => {
     const url = `${backend_url}/deploy/site/deployment/${id}`
-    const response = await axios.get(url, { withCredentials: true })
+    const response = await apiGetRequest(url, true)
     if (authHandler(response)) {
       navigate('/login')
       return null
@@ -84,7 +83,7 @@ const Logs = () => {
 
   const getSiteDetail = async (id: string) => {
     const url = `${backend_url}/deploy/site/${id}`
-    const response = await axios.get(url, { withCredentials: true })
+    const response = await apiGetRequest(url, true)
     if (authHandler(response)) {
       navigate('/login')
       return null
@@ -94,11 +93,7 @@ const Logs = () => {
   }
 
   const getLogs = async (id: string) => {
-    const response = await axios.post(
-      `${backend_url}/deploy/site/deployment/logs`,
-      { deploymentId: id },
-      { withCredentials: true }
-    )
+    const response = await apiPostRequest(`${backend_url}/deploy/site/deployment/logs`, true, { deploymentId: id })
     if (authHandler(response)) {
       navigate('/login')
       return []

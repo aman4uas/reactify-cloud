@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { errorHandler, authHandler } from '../../utils'
+import { errorHandler, authHandler, apiGetRequest } from '../../utils'
 import { useNavigate } from 'react-router-dom'
 
 const backend_url = import.meta.env.VITE_BACKEND_URL
@@ -28,9 +27,7 @@ const Sites = () => {
   const navigate = useNavigate()
   useEffect(() => {
     const getSitesData = async () => {
-      const response = await axios.get(`${backend_url}/deploy/sites`, {
-        withCredentials: true
-      })
+      const response = await apiGetRequest(`${backend_url}/deploy/sites`, true)
       if (authHandler(response)) {
         navigate('/login')
         return
