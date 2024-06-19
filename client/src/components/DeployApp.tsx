@@ -88,8 +88,9 @@ const DeployApp = () => {
       }
       if (errorHandler(response)) return
       if (response.data.data.length === 0) return
+      const n = response.data.data.length
       setBranches(response.data.data)
-      setBranch(response.data.data[0])
+      setBranch(response.data.data[n-1])
     }
 
     getBranches()
