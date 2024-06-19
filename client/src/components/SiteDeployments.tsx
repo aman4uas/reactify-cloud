@@ -244,7 +244,7 @@ const SiteDeployments = () => {
         return
       }
 
-      window.location.href = `/log/${response.data.data}`
+      navigate(`/log/${response.data.data}`)
     } catch (error) {
       toastMessage('Something went wrong !!', false)
       setUpdateConfigurationButtonDisable(false)
