@@ -128,7 +128,7 @@ const SiteDeployments = () => {
         }
       } catch (error) {
         console.log(error)
-        setSitePreviewUrl(errorImg)
+        setSitePreviewUrl(apiLimitReachedImg)
       }
     }
 
