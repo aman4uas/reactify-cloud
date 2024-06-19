@@ -23,7 +23,6 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
-    "puppeteer": "^22.11.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
