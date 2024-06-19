@@ -7,5 +7,6 @@ export default defineConfig({
     'process.env.VITE_BACKEND_URL': JSON.stringify(process.env.VITE_BACKEND_URL),
     'process.env.VITE_FRONTEND_URL': JSON.stringify(process.env.VITE_FRONTEND_URL),
     'process.env.VITE_PROXY_URL': JSON.stringify(process.env.VITE_PROXY_URL),
+    'process.env.VITE_SCREENSHOT_API': JSON.stringify(process.env.VITE_SCREENSHOT_API),
   }
 })

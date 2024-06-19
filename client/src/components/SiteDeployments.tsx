@@ -27,6 +27,7 @@ import { dateToString, dateToStringWithTime } from '../utils/dateToString'
 
 const backend_url = import.meta.env.VITE_BACKEND_URL
 const proxy_url = import.meta.env.VITE_PROXY_URL
+const screenshot_api = import.meta.env.VITE_SCREENSHOT_API
 
 interface ISiteDetail {
   _id: string
@@ -110,7 +111,7 @@ const SiteDeployments = () => {
 
     const getLiveWebSitePreview = async (url: string) => {
       try {
-        const apiUrl = process.env.SCREENSHOT_API
+        const apiUrl = screenshot_api
         if(!apiUrl) throw new Error("No Screenshot API")
         const params = {
           url: url,
