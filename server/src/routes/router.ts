@@ -15,8 +15,7 @@ import {
   updateWebhookStatus,
   autoDeploySite,
   updateCustomDomain,
-  updateSiteConfiguration,
-  captureScreenshot
+  updateSiteConfiguration
 } from '../controllers'
 
 import { auth, verifyWebhook } from '../middlewares'
@@ -40,6 +39,5 @@ router.post('/site/update/customDomain', auth, updateCustomDomain)
 router.post('/site/update/configuration', auth, updateSiteConfiguration)
 router.post('/github/update/webhook', auth, updateWebhookStatus) // This is unused !!
 router.post('/github/webhook/autodeploy', verifyWebhook, autoDeploySite)
-router.get('/capture-screenshot', captureScreenshot)
 
 export default router

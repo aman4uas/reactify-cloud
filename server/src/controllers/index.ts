@@ -13,7 +13,6 @@ import { updateWebhookStatus } from './webhook'
 import { autoDeploySite } from './autoDeploySite'
 import { updateCustomDomain } from './updateCustomDomain'
 import { updateSiteConfiguration } from './updateSiteConfiguration'
-import { captureScreenshot } from './captureScreenshot'
 
 export {
   callback,
@@ -31,6 +30,5 @@ export {
   updateWebhookStatus,
   autoDeploySite,
   updateCustomDomain,
-  updateSiteConfiguration,
-  captureScreenshot
+  updateSiteConfiguration
 }
