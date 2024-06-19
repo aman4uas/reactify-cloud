@@ -87,10 +87,11 @@ const DeployApp = () => {
         return
       }
       if (errorHandler(response)) return
-      if (response.data.data.length === 0) return
-      const n = response.data.data.length
-      setBranches(response.data.data)
-      setBranch(response.data.data[n-1])
+      const branches = response.data.data
+      if (branches.length === 0) return
+      const selected_branch = branches.includes("main") ? "main" : branches[0]
+      setBranches(branches)
+      setBranch(selected_branch)
     }
 
     getBranches()
