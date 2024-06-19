@@ -9,9 +9,9 @@ import { updateAllowedOrigins } from './utils'
 
 const app = express()
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001'
-const allowedOrigins = ['http://localhost:3000', FRONTEND_URL]
+// const allowedOrigins = ['http://localhost:3000', FRONTEND_URL]
 
-updateAllowedOrigins(allowedOrigins)
+// updateAllowedOrigins(allowedOrigins)
 
 app.use(express.json())
 app.use(cookieParser())
