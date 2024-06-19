@@ -20,6 +20,7 @@ import {
 import Navbar from './Navbar'
 import { errorHandler, authHandler } from '../utils'
 import { errorImg } from '../assets/errorImg'
+import apiLimitReachedImg from '../assets/api-limit-reached.png'
 
 import Loader from './helper/Loader'
 import LoadingScreenshot from '../assets/loading.gif'
@@ -120,7 +121,7 @@ const SiteDeployments = () => {
         }
         const response = await apiGetRequest(apiUrl, false, params)
         if(response.data.error){
-          setSitePreviewUrl(errorImg)
+          setSitePreviewUrl(apiLimitReachedImg)
         }
         else{
           setSitePreviewUrl(response.data.location)
