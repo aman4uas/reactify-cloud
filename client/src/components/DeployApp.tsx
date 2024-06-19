@@ -41,7 +41,7 @@ const DeployApp = () => {
         return
       }
       if (errorHandler(response)) return
-      window.location.href = `/log/${response.data.data}`
+      navigate(`/log/${response.data.data}`)
     } catch (error) {
       console.log(error)
       toastMessage('Something went wrong!!', false)
