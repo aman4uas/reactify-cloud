@@ -19,9 +19,7 @@ import {
 
 import Navbar from './Navbar'
 import { errorHandler, authHandler } from '../utils'
-import { errorImg } from '../assets/errorImg'
 import apiLimitReachedImg from '../assets/api-limit-reached.png'
-
 import Loader from './helper/Loader'
 import LoadingScreenshot from '../assets/loading.gif'
 
