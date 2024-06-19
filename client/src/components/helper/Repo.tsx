@@ -97,7 +97,8 @@ const Repo = () => {
               d="M4 12a8 8 0 018-8V0l-3.5 3.5L8 4m5-1.5L16.5 8H20a8 8 0 01-8 8v2.5L8 16.5z"
             ></path>
           </svg>
-          <p>Server might take upto 1 min to respond for the first request!!</p>
+          <h1 className='mb-5 text-xl font-bold'>Loading...</h1>
+          <p className='text-sm text-gray-300'>Server might take upto 2 minutes to respond for the very first request !!</p>
         </div>
       ) : empty ? (
         <div className="text-center mt-20">
