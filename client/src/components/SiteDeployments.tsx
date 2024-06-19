@@ -110,7 +110,8 @@ const SiteDeployments = () => {
 
     const getLiveWebSitePreview = async (url: string) => {
       try {
-        const apiUrl = 'https://v1.nocodeapi.com/amanhacks4u/screen/wnYEfxEBTwRADJsv/screenshot';
+        const apiUrl = process.env.SCREENSHOT_API
+        if(!apiUrl) throw new Error("No Screenshot API")
         const params = {
           url: url,
           inline: 'json',
