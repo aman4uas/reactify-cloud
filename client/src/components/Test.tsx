@@ -7,7 +7,7 @@ const Test = () => {
   return (
     <div>
       <h1>
-        This is Code <span>{code ? code : "undefined"}</span>
+        This is Code <span>{code ? code : 'undefined'}</span>
       </h1>
     </div>
   )

@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
@@ -15,11 +15,11 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001'
 
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors({ origin: "*", credentials: true }))
+app.use(cors({ origin: '*', credentials: true }))
 app.use(router)
 
-app.get("/", (req:Request, res:Response)=> {
-    res.send("Server is running !!")
+app.get('/', (req: Request, res: Response) => {
+  res.send('Server is running !!')
 })
 
 export default app

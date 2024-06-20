@@ -5,7 +5,7 @@ dotenv.config()
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const accessToken = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
+    const accessToken = req.cookies?.accessToken || req.header('Authorization')?.replace('Bearer ', '')
     const payload = jwt.verify(accessToken, process.env.JWT_SECRET!)
     req.user = payload
     next()

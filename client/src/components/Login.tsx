@@ -22,23 +22,24 @@ const loginHandler = async () => {
   }
 }
 
-
 const Login = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    
     const handleGitHubCallback = async (code: string) => {
       try {
-        const response = await apiGetRequest(`${import.meta.env.VITE_BACKEND_URL}/github/auth/callback?code=${code}`, false)
+        const response = await apiGetRequest(
+          `${import.meta.env.VITE_BACKEND_URL}/github/auth/callback?code=${code}`,
+          false
+        )
         if (response.data.success) {
           localStorage.setItem('accessToken', response.data.token)
           if (response.data.token) console.log('Token:', response.data.token)
           else toastMessage('Error getting token', false)
-          navigate("/")
+          navigate('/')
         } else {
           console.log(response.data.message || 'Login failed', false)
-          toastMessage("Cannot find Access Token !!", false)
+          toastMessage('Cannot find Access Token !!', false)
         }
       } catch (error) {
         console.log('Error during callback handling', error)

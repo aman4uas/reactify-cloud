@@ -6,7 +6,7 @@ const updateAllowedOrigins = async (allowedOrigins: string[]) => {
     const githubIPs = [...response.data.hooks, ...response.data.web]
     const githubDomains = []
     const length = githubIPs.length
-    for(let i=0; i<length; i++){
+    for (let i = 0; i < length; i++) {
       const httpDomain = `http://${githubIPs[i]}`
       const httpsDomain = `https://${githubIPs[i]}`
       githubDomains.push(httpDomain)
@@ -14,7 +14,7 @@ const updateAllowedOrigins = async (allowedOrigins: string[]) => {
     }
     allowedOrigins.push(...githubDomains)
   } catch (error) {
-    console.log("Error updating GitHub IPs", error)
+    console.log('Error updating GitHub IPs', error)
   }
 }
 

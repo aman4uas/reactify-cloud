@@ -112,18 +112,17 @@ const SiteDeployments = () => {
     const getLiveWebSitePreview = async (url: string) => {
       try {
         const apiUrl = screenshot_api
-        if(!apiUrl) throw new Error("No Screenshot API")
+        if (!apiUrl) throw new Error('No Screenshot API')
         const params = {
           url: url,
           inline: 'json',
           delay: 1,
-          viewport: '1366x768',
+          viewport: '1366x768'
         }
         const response = await apiGetRequest(apiUrl, false, params)
-        if(response.data.error){
+        if (response.data.error) {
           setSitePreviewUrl(apiLimitReachedImg)
-        }
-        else{
+        } else {
           setSitePreviewUrl(response.data.location)
         }
       } catch (error) {
@@ -131,7 +130,6 @@ const SiteDeployments = () => {
         setSitePreviewUrl(apiLimitReachedImg)
       }
     }
-
 
     try {
       getSiteDeployments()
@@ -223,18 +221,14 @@ const SiteDeployments = () => {
     }
 
     try {
-      const response = await apiPostRequest(
-        backend_url + '/site/update/configuration',
-        true,
-        {
-          autoDeploy: siteDetail.autoDeploy,
-          publishDirectory: siteDetail.publishDirectory,
-          buildCommand: siteDetail.buildCommand,
-          id: siteDetail._id,
-          sourceDirectory: siteDetail.sourceDirectory,
-          env: variables
-        }
-      )
+      const response = await apiPostRequest(backend_url + '/site/update/configuration', true, {
+        autoDeploy: siteDetail.autoDeploy,
+        publishDirectory: siteDetail.publishDirectory,
+        buildCommand: siteDetail.buildCommand,
+        id: siteDetail._id,
+        sourceDirectory: siteDetail.sourceDirectory,
+        env: variables
+      })
       if (authHandler(response)) {
         navigate('/login')
         return
@@ -261,11 +255,10 @@ const SiteDeployments = () => {
     }
     try {
       setChangeDomainButtonDisable(true)
-      const response = await apiPostRequest(
-        `${backend_url}/site/update/customDomain`, 
-        true, 
-        { customSubdomain, id: siteDetail?._id }
-      )
+      const response = await apiPostRequest(`${backend_url}/site/update/customDomain`, true, {
+        customSubdomain,
+        id: siteDetail?._id
+      })
       if (authHandler(response)) {
         navigate('/login')
         return

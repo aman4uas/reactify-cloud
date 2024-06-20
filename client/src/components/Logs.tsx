@@ -93,7 +93,9 @@ const Logs = () => {
   }
 
   const getLogs = async (id: string) => {
-    const response = await apiPostRequest(`${backend_url}/deploy/site/deployment/logs`, true, { deploymentId: id })
+    const response = await apiPostRequest(`${backend_url}/deploy/site/deployment/logs`, true, {
+      deploymentId: id
+    })
     if (authHandler(response)) {
       navigate('/login')
       return []
