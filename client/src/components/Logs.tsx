@@ -187,7 +187,7 @@ const Logs = () => {
       </div>
       <Navbar />
       <div className="flex flex-col my-auto md:flex-row items-center justify-center md:justify-evenly">
-        <div className="w-1/4 h-[50vh] justify-center items-center max-w-[450px] m-2 bg-gray-800 text-white rounded-lg shadow-lg p-4 flex flex-col">
+        <div className="w-full sm:w-3/4 md:w-1/4 md:h-[50vh] justify-center items-center max-w-[450px] m-2 bg-gray-800 text-white rounded-lg shadow-lg p-4 flex flex-col">
           <h2 className="text-2xl font-semibold mb-2">{siteDetail?.repoName}</h2>
           <p className="text-sm mb-2">
             Deploys from <span className="text-blue-400">@{siteDetail?.branchName}</span>
@@ -222,7 +222,7 @@ const Logs = () => {
           </p>
         </div>
 
-        <div className="w-3/5 h-[70vh] mt-10 bg-black text-white font-mono rounded-lg flex flex-col">
+        <div className="w-full h-[60vh] sm:w-[90%] md:w-3/5 md:h-[70vh] mt-10 bg-black text-white font-mono rounded-lg flex flex-col">
           <h1 className="text-2xl mb-6 bg-gray-700 text-center flex items-center justify-center">Logs</h1>
           <div ref={terminalRef} className="overflow-auto flex-grow terminal-scrollbar p-4">
             <div className="space-y-4">

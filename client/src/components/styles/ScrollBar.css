@@ -1,6 +1,7 @@
 /* Custom Scrollbar Styles */
 .terminal-scrollbar::-webkit-scrollbar {
   width: 8px;
+  height: 8px; 
 }
 
 .terminal-scrollbar::-webkit-scrollbar-track {

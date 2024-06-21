@@ -338,7 +338,7 @@ const SiteDeployments = () => {
             <img
               src={sitePreviewUrl}
               alt="Site Preview"
-              className="rounded-lg shadow-md h-[100px] md:h-[200px]"
+              className="rounded-lg shadow-md sm:w-[70%] mx-auto my-2 md:my-0 md:w-auto md:h-[200px]"
             />
           </div>
         </div>
@@ -352,20 +352,20 @@ const SiteDeployments = () => {
               <Link to={`/log/${_deployment._id}`}>
                 <div
                   key={_deployment._id}
-                  className="mx-auto my-3 p-4 bg-gray-900 text-white rounded-lg shadow-lg"
+                  className="mx-auto my-3 p-4 bg-gray-900 text-white rounded-lg shadow-lg w-full"
                 >
-                  <div className="flex justify-between items-center">
-                    <div>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center">
                       <span className="font-mono">
-                        <span className="underline text-blue-600">{_deployment._id}</span>
+                        <span className="underline text-blue-600 break-all">{_deployment._id}</span>
                       </span>
                       {_deployment.publish ? (
-                        <span className="ml-2 bg-green-600 text-white rounded px-2 py-1 text-xs">
+                        <span className="ml-0 sm:ml-2 mt-2 sm:mt-0 bg-green-600 text-white rounded px-2 py-1 text-xs">
                           Published
                         </span>
                       ) : null}
                     </div>
-                    <div className="text-right">
+                    <div className="text-left sm:text-right mt-2 sm:mt-0">
                       <p className="text-sm">{dateToStringWithTime(new Date(_deployment.createdAt))}</p>
                       <p
                         className={
@@ -380,7 +380,7 @@ const SiteDeployments = () => {
                       </p>
                     </div>
                   </div>
-                </div>{' '}
+                </div>
               </Link>
             ))}
           </div>
