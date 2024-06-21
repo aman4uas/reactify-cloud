@@ -64,7 +64,10 @@ const Sites = () => {
       ) : (
         <div className="bg-gray-800 p-1 md:p-4 rounded-lg">
           {sites.map((app: ISitesData, index) => (
-            <div key={index} className="flex flex-col md:flex-row m-1 md:m-3 md:justify-between md:items-center bg-gray-700 p-4 rounded-lg">
+            <div
+              key={index}
+              className="flex flex-col md:flex-row m-1 md:m-3 md:justify-between md:items-center bg-gray-700 p-4 rounded-lg"
+            >
               <div>
                 <h2 className="text-xl font-semibold">{app.repoName}</h2>
                 <p className="text-gray-400">Branch: {app.branchName}</p>

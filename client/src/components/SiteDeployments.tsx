@@ -40,6 +40,7 @@ interface ISiteDetail {
   publishDirectory: string
   autoDeploy: boolean
   createdAt: Date
+  env: string
 }
 
 interface IDeployment {
@@ -58,6 +59,14 @@ interface Variable {
 
 const sanitize = (input: string) => {
   return input.toLowerCase().replace(/[^a-z0-9-]/g, '')
+}
+
+const parseEnv = (env: { [key: string]: string }): Variable[] => {
+  return Object.entries(env).map(([key, value]) => ({
+    key,
+    value,
+    visible: false
+  }))
 }
 
 const SiteDeployments = () => {
@@ -99,6 +108,7 @@ const SiteDeployments = () => {
       if (errorHandler(response2)) return
       const siteData = response2.data.data
       setSiteDetail(siteData)
+      setVariables(parseEnv(JSON.parse(siteData.env)))
       let siteUrl = proxy_url.replace('http://', '')
       siteUrl = siteUrl.replace('https://', '')
       if (siteData.customDomain) {
@@ -334,7 +344,7 @@ const SiteDeployments = () => {
             <p className="mt-1">Published on 📅 {dateToString(new Date(siteDetail!.createdAt))}.</p>
           </div>
 
-          <div className="flex justify-center flex-shrink-0 ml-4 w-full md:w-[60%]">
+          <div className="flex justify-center flex-shrink-0 px-2 md:px-0 w-full md:w-[60%]">
             <img
               src={sitePreviewUrl}
               alt="Site Preview"
