@@ -139,8 +139,8 @@ const Repo = () => {
                   {repo.visibility === 'public' ? 'Public' : 'Private'}
                 </span>
                 <Link to={`/deploy/${repo.name}`} className="w-full md:w-auto">
-                  <button className="relative inline-flex items-center justify-center w-full md:w-auto p-0.5 mb-2 md:me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-green-800">
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  <button className="relative inline-flex items-center justify-center w-full md:w-auto p-0.5 my-2 md:my-auto md:me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white text-white focus:ring-4 focus:outline-none focus:ring-green-800">
+                    <span className="relative w-full md:w-auto px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
                       Deploy
                     </span>
                   </button>
